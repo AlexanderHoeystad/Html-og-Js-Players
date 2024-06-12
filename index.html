@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/axios/0.21.1/axios.js"></script>
+    <script src="https://unpkg.com/vue@3/dist/vue.global.js"></script>
+    <title>Players</title>
+</head>
+<body>
+    <div class="container mt-5">
+        <h2 class="mb-4">Players Data</h2>
+        <div id="app">
+            <div class="form-group">
+                <input v-model="searchQuery" placeholder="Search by Name" type="text" class="form-control mb-2" />
+            </div>
+
+            <ul v-if="showPlayersList && filteredPlayers.length" class="list-group mb-4">
+                <li v-for="player in filteredPlayers" :key="player.id" class="list-group-item">
+                    <span class="font-weight-bold">ID:</span> {{ player.id }} | 
+                    <span class="font-weight-bold">FirstName:</span> {{ player.firstName }} | 
+                    <span class="font-weight-bold">LastName:</span> {{ player.lastName }} |
+                    <span class="font-weight-bold">Number:</span> {{ player.number }} |
+                    <span class="font-weight-bold">Position:</span> {{ player.position }}
+                </li>
+            </ul>
+
+            <button v-on:click="getAllPlayers" class="btn btn-primary mb-3">
+                Get the whole list with players
+            </button>
+
+            <div class="btn-group mb-3">
+                <button v-on:click="sortPlayersByNumber" class="btn btn-secondary">
+                    Sort by Number
+                    <i :class="sortAscendingNumber ? 'fas fa-sort-alpha-up' : 'fas fa-sort-alpha-down'"></i>
+                </button>
+            </div>
+
+            <!-- Get Player By ID -->
+            <div>
+                <h3>Get Player By ID</h3>
+                <div class="form-group">
+                    <input v-model="iDToGetBy" placeholder="Player ID" type="number" class="form-control mb-2" />
+                    <button v-on:click="getPlayerById" class="btn btn-primary">Get Player</button>
+                </div>
+                <div v-if="singlePlayer" class="alert alert-info">
+                    <span class="font-weight-bold">ID:</span> {{ singlePlayer.id }} | 
+                    <span class="font-weight-bold">FirstName:</span> {{ singlePlayer.firstName }} | 
+                    <span class="font-weight-bold">LastName:</span> {{ singlePlayer.lastName }} |
+                    <span class="font-weight-bold">Number:</span> {{ singlePlayer.number }} |
+                    <span class="font-weight-bold">Position:</span> {{ singlePlayer.position }}
+                </div>
+            </div>
+
+            <!-- Create Player -->
+            <div class="mt-4">
+                <h3>Create Player</h3>
+                <div class="form-group">
+                    <input v-model="addPlayerData.firstName" placeholder="First Name" type="text" class="form-control mb-2" />
+                    <input v-model="addPlayerData.lastName" placeholder="Last Name" type="text" class="form-control mb-2" />
+                    <input v-model="addPlayerData.number" placeholder="Number" type="number" class="form-control mb-2" />
+                    <input v-model="addPlayerData.position" placeholder="Position" type="text" class="form-control mb-2" />
+                    <button v-on:click="addPlayer" class="btn btn-primary">Create Player</button>
+                </div>
+            </div>
+
+            <!-- Update Player -->
+            <div class="mt-4">
+                <h3>Update Player</h3>
+                <div class="form-group">
+                    <input v-model="updatePlayerData.id" placeholder="ID" type="number" class="form-control mb-2" />
+                    <input v-model="updatePlayerData.firstName" placeholder="First Name" type="text" class="form-control mb-2" />
+                    <input v-model="updatePlayerData.lastName" placeholder="Last Name" type="text" class="form-control mb-2" />
+                    <input v-model="updatePlayerData.number" placeholder="Number" type="number" class="form-control mb-2" />
+                    <input v-model="updatePlayerData.position" placeholder="Position" type="text" class="form-control mb-2" />
+                    <button v-on:click="updatePlayer" class="btn btn-primary">Update Player</button>
+                </div>
+            </div>
+
+            <!-- Delete Player -->
+            <div class="mt-4">
+                <h3>Delete Player</h3>
+                <div class="form-group">
+                    <input v-model="deletePlayerData.id" placeholder="Player ID" type="number" class="form-control mb-2" />
+                    <button v-on:click="deletePlayer" class="btn btn-danger">Delete Player</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="index.js"></script>
+</body>
+</html>
+
+
